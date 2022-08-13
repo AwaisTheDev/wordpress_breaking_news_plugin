@@ -20,38 +20,36 @@ if (!defined('ABSPATH')) {
     die;
 }
 
-class ToptalBreakingNews
-{
+define('TTBN_PLUGIN_NAME', plugin_basename(__FILE__));
 
-    public function activate()
-    {
-        //do something on plugin activation
-    }
-
-    public function deactivate()
-    {
-        //do something on plugin deactivation
-    }
-
-    public function uninstall()
-    {
-        //do something on plugin uninstall
-
-    }
-}
-
-if (class_exists('ToptalBreakingNews')) {
-    $toptalBreakingNews = new ToptalBreakingNews;
-}
+define('TTBN_PLUGIN_PATH', trailingslashit(plugin_dir_path(__FILE__)));
+define('TTBN_PLUGIN_URL', trailingslashit(plugins_url('/', __FILE__)));
 
 /**
- * Plugin activation hook
+ * include plugin activate function
  */
-
-register_activation_hook(__FILE__, array($toptalBreakingNews, 'activate'));
+require_once plugin_dir_path(__FILE__) . 'includes/activate-plugin.php';
 
 /**
- * Plugin activation hook
+ * include plugin deactivate function
  */
 
-register_deactivation_hook(__FILE__, array($toptalBreakingNews, 'deactivate'));
+require_once plugin_dir_path(__FILE__) . 'includes/deactivate-plugin.php';
+
+/**
+ * include css and js
+ */
+
+require_once plugin_dir_path(__FILE__) . 'includes/enqueue-scripts.php';
+
+/**
+ * include plugin plugin settings page
+ */
+
+require_once plugin_dir_path(__FILE__) . 'includes/settings-page.php';
+
+/**
+ * include plugin plugin settings link
+ */
+
+require_once plugin_dir_path(__FILE__) . 'includes/settings-link.php';
