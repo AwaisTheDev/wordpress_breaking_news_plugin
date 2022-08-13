@@ -53,3 +53,9 @@ require_once plugin_dir_path(__FILE__) . 'includes/settings-page.php';
  */
 
 require_once plugin_dir_path(__FILE__) . 'includes/settings-link.php';
+
+/**
+ * Include post metabox
+ */
+
+require_once plugin_dir_path(__FILE__) . 'includes/post-metabox.php';

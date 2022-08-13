@@ -8,4 +8,35 @@
 })( jQuery );
 
 
-console.log('Awesome');
+jQuery(document).ready(function($){
+    $('#is-breaking-news').change(function() {
+        if(this.checked) {
+            $('.breaking_news_data_wrap').show();
+        }
+        else{
+            $('.breaking_news_data_wrap').hide();
+        } 
+    });
+
+
+    $('#set-expiration-date').change(function() {
+        if(this.checked) {
+            $('.expiration-data-wrap').show();
+        }
+        else{
+            $('.expiration-data-wrap').hide();
+        } 
+    });
+
+
+    $('#expiration-date').datepicker({
+        dateFormat : 'dd-mm-yy'
+    });
+
+    $('#expiration-time').timepicker({
+       timeFormat: 'h:mm p',
+       dynamic: false,
+       dropdown: true,
+       scrollbar: true
+    });
+})
