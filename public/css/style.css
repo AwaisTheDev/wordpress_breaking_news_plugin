@@ -1,0 +1,22 @@
+.ttbn-breaking-news-wrapper {
+    padding: 10px;
+    text-align: center;
+}
+
+.ttbn-breaking-news-wrapper .ttbn_title {
+    font-weight: bold;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.ttbn-breaking-news-wrapper a:hover .ttbn_right_icon {
+    transform: translateX(6px);
+}
+
+.ttbn-breaking-news-wrapper .ttbn_right_icon {
+    font-size: 1.3em;
+    margin-left: 5px;
+    display: inline-block;
+    transition: 0.3s;
+
+}

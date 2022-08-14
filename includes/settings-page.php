@@ -19,7 +19,7 @@ add_action('admin_menu', 'ttbn_plugin_settings_page');
 
 function ttbn_breaking_news_options_page()
 {
-    require_once TTBN_PLUGIN_PATH . 'includes/templates/settings-page.php';
+    require_once TTBN_PLUGIN_PATH . 'includes/templates/settings-page-content.php';
 }
 
 function ttbn_plugin_settings()

@@ -37,6 +37,12 @@ require_once plugin_dir_path(__FILE__) . 'includes/activate-plugin.php';
 require_once plugin_dir_path(__FILE__) . 'includes/deactivate-plugin.php';
 
 /**
+ * include helper functions
+ */
+
+require_once plugin_dir_path(__FILE__) . 'includes/helper-functions.php';
+
+/**
  * include css and js
  */
 

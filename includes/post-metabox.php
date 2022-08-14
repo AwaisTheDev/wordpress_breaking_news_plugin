@@ -17,8 +17,11 @@ function ttbn_post_metabox_setup()
 
 function ttbn_add_metaboxes()
 {
-    //add_meta_box($id, $title, $callback, $screen, $context, $priority, $callback_args)
+    /**
+     * This function will create a new netabox on the post page with title "Breaking News"
+     */
 
+    //add_meta_box($id, $title, $callback, $screen, $context, $priority, $callback_args)
     add_meta_box('ttbn_breaking_news_metabox', 'Breaking News', 'ttbn_metabox', 'post-new.php', 'side', "default");
 
 }
@@ -26,10 +29,14 @@ function ttbn_add_metaboxes()
 function ttbn_metabox($post)
 {
 
-    /*Create a nonce for security */
+    /**
+     * Create a nonce for security and we will verify it while saving the post
+     */
     wp_nonce_field(basename(__FILE__), 'ttbn_breaking_news_metabox_nonce');
+    //echo get_post_meta($post->ID, 'is-breaking-news', true);
     ?>
 
+<!-- Is breaking news start -->
 <p>
     <label for="is-breaking-news"><?php _e("Make this post breaking news", 'ttbn');?></label>
     <input class="ml-10" type="checkbox" id="is-breaking-news" name="is-breaking-news" value="1"
@@ -38,6 +45,7 @@ function ttbn_metabox($post)
 <div class="breaking_news_data_wrap"
     style="display:<?php echo (get_post_meta($post->ID, 'is-breaking-news', true) == 1) ? 'Block' : 'none'; ?>">
 
+    <!-- Custom title start -->
     <p>
         <label for=" custom-title"><?php _e("Custom title", 'ttbn');?></label>
         <br />
@@ -45,6 +53,7 @@ function ttbn_metabox($post)
             value="<?php echo esc_attr(get_post_meta($post->ID, 'custom-title', true)); ?>" />
     </p>
 
+    <!-- Expiration date checkbox start -->
     <p>
         <label for="set-_da-date"><?php _e("Set expiration date", 'ttbn');?></label>
         <input class="ml-10" type="checkbox" id="set-expiration-date" name="set-expiration-date" value="1"
@@ -53,6 +62,8 @@ function ttbn_metabox($post)
 
     <div class="expiration-data-wrap"
         style="display:<?php echo (get_post_meta($post->ID, 'set-expiration-date', true) == 1) ? 'Block' : 'none'; ?>">
+
+        <!-- Expiration date start -->
         <p>
             <label for="expiration-date"><?php _e("Expiration date", 'ttbn');?></label>
             <br />
@@ -60,6 +71,7 @@ function ttbn_metabox($post)
                 value="<?php echo esc_attr(get_post_meta($post->ID, 'expiration-date', true)); ?>" />
         </p>
 
+        <!-- Expiration time start-->
         <p>
             <label for="expiration-time"><?php _e("Expiration time", 'ttbn');?></label>
             <br />
@@ -87,6 +99,46 @@ function ttbn_save_metaboxes($post_id, $post)
     if (!current_user_can($post_type->cap->edit_post, $post_id)) {
         return $post_id;
     }
+
+    /**
+     * Check if the post is marked as breaking news and then search all the posts which are set as breaking news.
+     * Then set these unmark these posts as breaking news by setting the meta vale "is-breaking-news" to 0
+     */
+    if (isset($_POST['is-breaking-news']) && $_POST['is-breaking-news'] == "1") {
+
+        $old_value = get_post_meta($post_id, 'is-breaking-news', true);
+        $new_value = $_POST['is-breaking-news'];
+
+        if ($old_value != $new_value) {
+
+            $args = array(
+                'post_type' => 'post',
+                'post_status' => 'publish',
+                'meta_query' => array(
+                    array(
+                        'key' => 'is-breaking-news',
+                        'value' => '1',
+                        'compare' => 'LIKE',
+                    ),
+                ),
+            );
+
+            $breaking_news = new WP_Query($args);
+
+            if ($breaking_news->have_posts()) {
+                while ($breaking_news->have_posts()) {
+                    $breaking_news->the_post();
+
+                    update_post_meta(get_the_ID(), 'is-breaking-news', '0'); //Update meta value to 0
+
+                }
+            }
+        }
+    }
+
+    /**
+     * Update post meta with newly submitted values.
+     */
 
     /* Breaking News checkbox */
     $is_breaking_news_meta_key = 'is-breaking-news';

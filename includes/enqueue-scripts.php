@@ -1,6 +1,10 @@
 <?php
 
-function ttbn_enqueue_plugin_scripts()
+/**
+ * Admin scripts
+ */
+
+function ttbn_enqueue_admin_scripts()
 {
 
     /* Load color picker CSS and JS files which are pre-registered in wordpress*/
@@ -22,4 +26,14 @@ function ttbn_enqueue_plugin_scripts()
     wp_enqueue_script('jquery-time-picker', '//cdnjs.cloudflare.com/ajax/libs/timepicker/1.3.5/jquery.timepicker.min.js', array(), '1.0', true);
 }
 
-add_action('admin_enqueue_scripts', 'ttbn_enqueue_plugin_scripts');
+add_action('admin_enqueue_scripts', 'ttbn_enqueue_admin_scripts');
+
+/**
+ * Public Scripts
+ */
+function ttbn_enqueue_public_scripts()
+{
+    wp_enqueue_style('ttbn_public_style', TTBN_PLUGIN_URL . '/public/css/style.css', array(), 1.0, 'all');
+
+}
+add_action('wp_enqueue_scripts', 'ttbn_enqueue_public_scripts');
