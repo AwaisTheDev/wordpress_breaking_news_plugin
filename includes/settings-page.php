@@ -38,11 +38,13 @@ function ttbn_plugin_settings()
     register_setting('ttbn_settings_group', 'breaking_news_title');
     register_setting('ttbn_settings_group', 'breaking_background_color');
     register_setting('ttbn_settings_group', 'breaking_text_color');
+    register_setting('ttbn_settings_group', 'edit_breaking_news_link');
 
     //add_settings_field($id, $title, $callback, $page, $section, $args)
     add_settings_field('breaking_news_title_field', 'Section Title', 'breaking_news_title_callback', 'ttbn_breaking_news', 'general_settings');
     add_settings_field('breaking_news_bg_color_field', 'Background Color', 'breaking_news_background_color_callback', 'ttbn_breaking_news', 'general_settings');
     add_settings_field('breaking_news_text_color_field', 'Text Color', 'breaking_news_text_color_callback', 'ttbn_breaking_news', 'general_settings');
+    add_settings_field('breaking_news_edit_link', 'Current Breaking news', 'edit_breaking_news_link_callback', 'ttbn_breaking_news', 'general_settings');
 }
 
 function general_settings_callback()
@@ -75,5 +77,38 @@ function breaking_news_text_color_callback()
     $value = get_option('breaking_text_color');
 
     echo "<input type='text' class='ttbn-color-picker' name='breaking_text_color' value='$value'>";
+
+}
+
+function edit_breaking_news_link_callback()
+{
+    $args = array(
+        'post_type' => 'post',
+        'post_status' => 'publish',
+        'posts_per-page' => 1,
+        'meta_query' => array(
+            array(
+                'key' => 'is-breaking-news',
+                'value' => '1',
+                'compare' => 'LIKE',
+            ),
+        ),
+    );
+
+    $breaking_news = new WP_Query($args);
+
+    if ($breaking_news->have_posts()) {
+        while ($breaking_news->have_posts()) {
+            $breaking_news->the_post();
+
+            echo get_the_title();
+            echo "<br>";
+
+            edit_post_link('Edit post');
+
+        }
+    } else {
+        echo "Currently there is no post set as breaking news. You can set a post as breaking news on the post edit page.";
+    }
 
 }

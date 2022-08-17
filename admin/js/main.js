@@ -34,7 +34,8 @@ jQuery(document).ready(function($){
     });
 
     $('#expiration-time').timepicker({
-       timeFormat: 'h:mm p',
+       timeFormat: 'HH:mm',
+       interval: 1,       
        dynamic: false,
        dropdown: true,
        scrollbar: true

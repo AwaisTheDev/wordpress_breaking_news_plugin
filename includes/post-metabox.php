@@ -137,6 +137,33 @@ function ttbn_save_metaboxes($post_id, $post)
     }
 
     /**
+     * Check if expiration date is changed
+     * if date is changed create a new event
+     */
+    if (isset($_POST['set-expiration-date']) && $_POST['set-expiration-date'] == "1") {
+        $old_expiration_date = get_post_meta($post, 'expiration-date', true);
+        $old_expiration_time = get_post_meta($post, 'expiration-time', true);
+
+        $new_expiration_date = $_POST['expiration-date'];
+        $new_expiration_time = $_POST['expiration-time'];
+
+        if ($new_expiration_date != $old_expiration_date || $new_expiration_time != $old_expiration_time) {
+
+            if (function_exists('ttbn_expire_breaking_news')) {
+
+                if (!wp_next_scheduled('expire_breaking_news')) {
+
+                    $hook_timestamp = strtotime($new_expiration_date . " " . $new_expiration_time);
+                    
+                    wp_schedule_single_event($hook_timestamp, 'expire_breaking_news', array($post_id));
+                }
+
+            }
+
+        }
+    }
+
+    /**
      * Update post meta with newly submitted values.
      */
 
@@ -165,4 +192,14 @@ function ttbn_save_metaboxes($post_id, $post)
     $expiration_time_meta_value = (isset($_POST[$expiration_time_meta_key]) ? $_POST[$expiration_time_meta_key] : "");
     update_post_meta($post_id, $expiration_time_meta_key, $expiration_time_meta_value);
 
+}
+
+//this is a cron job to automatically unmark breaking news and reset values
+add_action('expire_breaking_news', 'ttbn_expire_breaking_news');
+function ttbn_expire_breaking_news($post_id)
+{
+    update_post_meta($post_id, 'is-breaking-news', '0');
+    update_post_meta($post_id, 'set-expiration-date', '0');
+    update_post_meta($post_id, 'expiration-date', '');
+    update_post_meta($post_id, 'expiration-time', '');
 }

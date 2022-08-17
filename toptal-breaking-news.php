@@ -63,5 +63,4 @@ require_once plugin_dir_path(__FILE__) . 'includes/post-metabox.php';
 /**
  * include helper functions
  */
-
 require_once plugin_dir_path(__FILE__) . 'includes/load-widget-frontend.php';
