@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * This find will create a new admin subpage under posts menu. This page will have plgin settings
+ */
+
 function ttbn_plugin_settings_page()
 {
     //add settings page for the plugin settings
@@ -29,7 +33,7 @@ function ttbn_plugin_settings()
      * This will create a section on the page
      */
     //add_settings_section( $id:string, $title:string, $callback:callable, $page:string )
-    add_settings_section('general_settings', 'General Settings', 'general_settings_callback', 'ttbn_breaking_news');
+    add_settings_section('general_settings', __('General Settings', 'ttbn'), 'general_settings_callback', 'ttbn_breaking_news');
 
     /**
      * This will register a new settings option
@@ -41,10 +45,10 @@ function ttbn_plugin_settings()
     register_setting('ttbn_settings_group', 'edit_breaking_news_link');
 
     //add_settings_field($id, $title, $callback, $page, $section, $args)
-    add_settings_field('breaking_news_title_field', 'Section Title', 'breaking_news_title_callback', 'ttbn_breaking_news', 'general_settings');
-    add_settings_field('breaking_news_bg_color_field', 'Background Color', 'breaking_news_background_color_callback', 'ttbn_breaking_news', 'general_settings');
-    add_settings_field('breaking_news_text_color_field', 'Text Color', 'breaking_news_text_color_callback', 'ttbn_breaking_news', 'general_settings');
-    add_settings_field('breaking_news_edit_link', 'Current Breaking news', 'edit_breaking_news_link_callback', 'ttbn_breaking_news', 'general_settings');
+    add_settings_field('breaking_news_title_field', __('Section Title', 'ttbn'), 'breaking_news_title_callback', 'ttbn_breaking_news', 'general_settings');
+    add_settings_field('breaking_news_bg_color_field', __('Background Color', 'ttbn'), 'breaking_news_background_color_callback', 'ttbn_breaking_news', 'general_settings');
+    add_settings_field('breaking_news_text_color_field', __('Text Color', 'ttbn'), 'breaking_news_text_color_callback', 'ttbn_breaking_news', 'general_settings');
+    add_settings_field('breaking_news_edit_link', __('Current Breaking news', 'ttbn'), 'edit_breaking_news_link_callback', 'ttbn_breaking_news', 'general_settings');
 }
 
 function general_settings_callback()
@@ -52,6 +56,7 @@ function general_settings_callback()
     echo "Here you can change the breaking news section settings. You can change title and section colors.";
 }
 
+/* Breaking news widget title field*/
 function breaking_news_title_callback()
 {
     $value = get_option('breaking_news_title');
@@ -64,6 +69,7 @@ function breaking_news_title_callback()
 
 }
 
+/* Breaking news widget background color field*/
 function breaking_news_background_color_callback()
 {
     $value = get_option('breaking_background_color');
@@ -71,7 +77,7 @@ function breaking_news_background_color_callback()
     echo "<input type='text' class='ttbn-color-picker' name='breaking_background_color' value='$value'>";
 
 }
-
+/* Breaking news widget text color field*/
 function breaking_news_text_color_callback()
 {
     $value = get_option('breaking_text_color');
@@ -79,6 +85,8 @@ function breaking_news_text_color_callback()
     echo "<input type='text' class='ttbn-color-picker' name='breaking_text_color' value='$value'>";
 
 }
+
+/* Breaking news post edit link field*/
 
 function edit_breaking_news_link_callback()
 {
@@ -103,12 +111,11 @@ function edit_breaking_news_link_callback()
 
             echo get_the_title();
             echo "<br>";
-
             edit_post_link('Edit post');
 
         }
     } else {
-        echo "Currently there is no post set as breaking news. You can set a post as breaking news on the post edit page.";
+        echo __("Currently there is no post set as breaking news. You can set a post as breaking news on the post edit page.");
     }
 
 }

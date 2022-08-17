@@ -1,5 +1,8 @@
 <?php
 
+/**
+ * This function will be triggered on plugin activation
+ */
 function ttbn_activate_plugin()
 {
 

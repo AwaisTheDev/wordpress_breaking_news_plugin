@@ -33,6 +33,7 @@ add_action('admin_enqueue_scripts', 'ttbn_enqueue_admin_scripts');
  */
 function ttbn_enqueue_public_scripts()
 {
+    /*Load plugin stylesheet */
     wp_enqueue_style('ttbn_public_style', TTBN_PLUGIN_URL . '/public/css/style.css', array(), 1.0, 'all');
 
 }

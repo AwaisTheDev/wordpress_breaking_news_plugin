@@ -1,5 +1,7 @@
 <?php
-
+/**
+ * This function will be triggered on plugin deactivation
+ */
 function ttbn_deactivate_plugin()
 {
 

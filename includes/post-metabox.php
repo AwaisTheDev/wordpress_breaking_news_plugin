@@ -65,17 +65,17 @@ function ttbn_metabox($post)
 
         <!-- Expiration date start -->
         <p>
-            <label for="expiration-date"><?php _e("Expiration date", 'ttbn');?></label>
+            <label for="expiration-date"><?php _e("Expiration date (dd-mm-yyyy)", 'ttbn');?></label>
             <br />
-            <input class="widefat" type="text" name="expiration-date" id="expiration-date"
+            <input class="widefat" type="text" name="expiration-date" id="expiration-date" autocomplete="off"
                 value="<?php echo esc_attr(get_post_meta($post->ID, 'expiration-date', true)); ?>" />
         </p>
 
         <!-- Expiration time start-->
         <p>
-            <label for="expiration-time"><?php _e("Expiration time", 'ttbn');?></label>
+            <label for="expiration-time"><?php _e("Expiration time (hh-mm) 24 hour format", 'ttbn');?></label>
             <br />
-            <input class="widefat" type="text" name="expiration-time" id="expiration-time"
+            <input class="widefat" type="text" name="expiration-time" id="expiration-time" autocomplete="off"
                 value="<?php echo esc_attr(get_post_meta($post->ID, 'expiration-time', true)); ?>" />
         </p>
     </div>
@@ -153,8 +153,8 @@ function ttbn_save_metaboxes($post_id, $post)
 
                 if (!wp_next_scheduled('expire_breaking_news')) {
 
-                    $hook_timestamp = strtotime($new_expiration_date . " " . $new_expiration_time);
-                    
+                    $hook_timestamp = strtotime($new_expiration_date . " " . $new_expiration_time . wp_timezone_string());
+
                     wp_schedule_single_event($hook_timestamp, 'expire_breaking_news', array($post_id));
                 }
 
