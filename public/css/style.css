@@ -20,3 +20,9 @@
     transition: 0.3s;
 
 }
+
+
+.ttbn-full-width {
+    margin-left: calc(-100vw / 2 + 500px / 2);
+    margin-right: calc(-100vw / 2 + 500px / 2);
+}

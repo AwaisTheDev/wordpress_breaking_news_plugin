@@ -1,9 +1,10 @@
 <?php
 
-add_action('wp_head', 'ttbn_add_breaking_news_to_header');
+add_action('wp_footer', 'ttbn_add_breaking_news_to_header');
 
 function ttbn_add_breaking_news_to_header()
 {
+    ob_start();
 
     /**
      * Search for breaking news post
@@ -68,10 +69,45 @@ function ttbn_add_breaking_news_to_header()
             }
             echo "<span class='ttbn_right_icon'>→</span>";
             echo "</a>";
-
         }
         echo "</div>";
-
     }
 
+    wp_reset_postdata();
+
+    $html = ob_get_clean();
+
+    echo
+        '<script>
+        jQuery(document).ready(function($){
+            var mainHeader = $("header").first();
+            var headerClass = $(".header").first();
+            var siteHeader = $(".site-header").first();
+            var masthead = $("#masthead").first();
+
+            if(mainHeader.length > 0){
+                $( "' . $html . '" ).insertAfter( mainHeader ).first();
+            }else if(headerClass.length > 0){
+                $( "' . $html . '" ).insertAfter( headerClass ).first();
+            }else if(siteHeader.length > 0){
+                $( "' . $html . '" ).insertAfter( siteHeader ).first();
+            }else if(masthead.length > 0){
+                $( "' . $html . '" ).insertAfter( masthead ).first();
+            }else{
+                $("body").prepend( "' . $html . '");
+            }
+        })
+    </script>';
+
 }
+
+function ttbn_load_jquery()
+{
+    if (!wp_script_is('jquery', 'enqueued')) {
+
+        //Enqueue
+        wp_enqueue_script('jquery');
+
+    }
+}
+add_action('wp_enqueue_scripts', 'ttbn_load_jquery');
