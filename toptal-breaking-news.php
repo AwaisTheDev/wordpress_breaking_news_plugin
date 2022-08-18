@@ -21,9 +21,9 @@ if (!defined('ABSPATH')) {
 }
 
 define('TTBN_PLUGIN_NAME', plugin_basename(__FILE__));
-
 define('TTBN_PLUGIN_PATH', trailingslashit(plugin_dir_path(__FILE__)));
 define('TTBN_PLUGIN_URL', trailingslashit(plugins_url('/', __FILE__)));
+define('TTBN_PLUGIN_FILE', __FILE__);
 
 /**
  * include plugin activate function

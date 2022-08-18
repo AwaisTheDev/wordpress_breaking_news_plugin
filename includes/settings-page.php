@@ -48,7 +48,7 @@ function ttbn_plugin_settings()
     add_settings_field('breaking_news_title_field', __('Section Title', 'ttbn'), 'breaking_news_title_callback', 'ttbn_breaking_news', 'general_settings');
     add_settings_field('breaking_news_bg_color_field', __('Background Color', 'ttbn'), 'breaking_news_background_color_callback', 'ttbn_breaking_news', 'general_settings');
     add_settings_field('breaking_news_text_color_field', __('Text Color', 'ttbn'), 'breaking_news_text_color_callback', 'ttbn_breaking_news', 'general_settings');
-    add_settings_field('breaking_news_edit_link', __('Current Breaking news', 'ttbn'), 'edit_breaking_news_link_callback', 'ttbn_breaking_news', 'general_settings');
+    add_settings_field('breaking_news_edit_link', __('Active Breaking news', 'ttbn'), 'edit_breaking_news_link_callback', 'ttbn_breaking_news', 'general_settings');
 }
 
 function general_settings_callback()
@@ -60,10 +60,6 @@ function general_settings_callback()
 function breaking_news_title_callback()
 {
     $value = get_option('breaking_news_title');
-
-    if ($value == null || $value == "") {
-        $value = "Breaking News";
-    }
 
     echo "<input type='text' name='breaking_news_title' value='$value'>";
 
@@ -94,6 +90,7 @@ function edit_breaking_news_link_callback()
         'post_type' => 'post',
         'post_status' => 'publish',
         'posts_per-page' => 1,
+        'ignore_sticky_posts' => 1,
         'meta_query' => array(
             array(
                 'key' => 'is-breaking-news',
@@ -115,7 +112,7 @@ function edit_breaking_news_link_callback()
 
         }
     } else {
-        echo __("Currently there is no post set as breaking news. You can set a post as breaking news on the post edit page.");
+        echo __("Currently there is no active breaking news. You can set a post as active breaking news on the post edit page.");
     }
 
 }

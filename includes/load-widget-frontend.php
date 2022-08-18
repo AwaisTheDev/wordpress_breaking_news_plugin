@@ -14,6 +14,7 @@ function ttbn_add_breaking_news_to_header()
         'post_type' => 'post',
         'post_status' => 'publish',
         'posts_per_page' => 1,
+        'ignore_sticky_posts' => 1,
         'meta_query' => array(
             array(
                 'key' => 'is-breaking-news',
@@ -85,6 +86,8 @@ function ttbn_add_breaking_news_to_header()
             var siteHeader = $(".site-header").first();
             var masthead = $("#masthead").first();
 
+            console.log(headerClass);
+
             if(mainHeader.length > 0){
                 $( "' . $html . '" ).insertAfter( mainHeader ).first();
             }else if(headerClass.length > 0){
@@ -100,6 +103,8 @@ function ttbn_add_breaking_news_to_header()
     </script>';
 
 }
+
+/**Load jquery if not already enqueued */
 
 function ttbn_load_jquery()
 {
