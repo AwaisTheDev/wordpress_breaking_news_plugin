@@ -11,6 +11,7 @@ if (!defined('WP_INSTALL_PLUGIN')) {
 /**
  * Remove plugin options on install
  */
-delete_option('breaking_background_color');
-delete_option('breaking_text_color');
-delete_option('breaking_news_title');
+delete_option('ttbn_breaking_news_title');
+delete_option('ttbn_breaking_text_color');
+delete_option('ttbn_breaking_background_color');
+delete_option('ttbn_frontend_custom_selector');

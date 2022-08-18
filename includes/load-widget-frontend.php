@@ -32,9 +32,10 @@ function ttbn_add_breaking_news_to_header()
          * Get global options for the widget like title, text-color and background-color and set a custom value if options are not
          * set on the options page
          */
-        $background_color = get_option('breaking_background_color');
-        $text_color = get_option('breaking_text_color');
-        $widget_title = get_option('breaking_news_title');
+        $background_color = get_option('ttbn_breaking_background_color');
+        $text_color = get_option('ttbn_breaking_text_color');
+        $widget_title = get_option('ttbn_breaking_news_title');
+        $custom_selector = get_option('ttbn_frontend_custom_selector');
 
         if ($background_color == null || $background_color == "") {
             $background_color = "black";
@@ -78,17 +79,22 @@ function ttbn_add_breaking_news_to_header()
 
     $html = ob_get_clean();
 
+    /**
+     * Below code will check if the user has added a custom selector on the options page. if not it find the elements on the page in following priority
+     * header, .header, .site-header, #masthead if one of the elements is found on the page it will add the breaking news section below that. if none of the
+     * above elements is found we just add the widget to the top of body
+     * */
     echo
         '<script>
         jQuery(document).ready(function($){
             var mainHeader = $("header").first();
             var headerClass = $(".header").first();
             var siteHeader = $(".site-header").first();
-            var masthead = $("#masthead").first();
+            var customSelector = $("' . $custom_selector . '").first();
 
-            console.log(headerClass);
-
-            if(mainHeader.length > 0){
+            if(customSelector.length > 0){
+                $( "' . $html . '" ).insertAfter( customSelector ).first();
+            }else if(mainHeader.length > 0){
                 $( "' . $html . '" ).insertAfter( mainHeader ).first();
             }else if(headerClass.length > 0){
                 $( "' . $html . '" ).insertAfter( headerClass ).first();

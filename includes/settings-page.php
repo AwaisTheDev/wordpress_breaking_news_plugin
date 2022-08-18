@@ -39,16 +39,19 @@ function ttbn_plugin_settings()
      * This will register a new settings option
      */
     //register_setting($option_group, $option_name, $sanitize_callback)
-    register_setting('ttbn_settings_group', 'breaking_news_title');
-    register_setting('ttbn_settings_group', 'breaking_background_color');
-    register_setting('ttbn_settings_group', 'breaking_text_color');
-    register_setting('ttbn_settings_group', 'edit_breaking_news_link');
+    register_setting('ttbn_settings_group', 'ttbn_breaking_news_title');
+    register_setting('ttbn_settings_group', 'ttbn_breaking_background_color');
+    register_setting('ttbn_settings_group', 'ttbn_breaking_text_color');
+    register_setting('ttbn_settings_group', 'ttbn_frontend_custom_selector');
+    register_setting('ttbn_settings_group', 'ttbn_edit_breaking_news_link');
 
     //add_settings_field($id, $title, $callback, $page, $section, $args)
-    add_settings_field('breaking_news_title_field', __('Section Title', 'ttbn'), 'breaking_news_title_callback', 'ttbn_breaking_news', 'general_settings');
-    add_settings_field('breaking_news_bg_color_field', __('Background Color', 'ttbn'), 'breaking_news_background_color_callback', 'ttbn_breaking_news', 'general_settings');
-    add_settings_field('breaking_news_text_color_field', __('Text Color', 'ttbn'), 'breaking_news_text_color_callback', 'ttbn_breaking_news', 'general_settings');
-    add_settings_field('breaking_news_edit_link', __('Active Breaking news', 'ttbn'), 'edit_breaking_news_link_callback', 'ttbn_breaking_news', 'general_settings');
+    add_settings_field('ttbn_breaking_news_title_field', __('Section Title', 'ttbn'), 'ttbn_breaking_news_title_callback', 'ttbn_breaking_news', 'general_settings');
+    add_settings_field('breaking_news_bg_color_field', __('Background Color', 'ttbn'), 'ttbn_breaking_news_background_color_callback', 'ttbn_breaking_news', 'general_settings');
+    add_settings_field('breaking_news_text_color_field', __('Text Color', 'ttbn'), 'ttbn_breaking_news_text_color_callback', 'ttbn_breaking_news', 'general_settings');
+    add_settings_field('ttbn_frontend_custom_selector_field', __('Custom selector for frontend widget(Optional)', 'ttbn'), 'ttbn_breaking_news_custom_selector', 'ttbn_breaking_news', 'general_settings');
+    add_settings_field('breaking_news_edit_link', __('Active Breaking news', 'ttbn'), 'ttbn_edit_breaking_news_link_callback', 'ttbn_breaking_news', 'general_settings');
+
 }
 
 function general_settings_callback()
@@ -57,34 +60,47 @@ function general_settings_callback()
 }
 
 /* Breaking news widget title field*/
-function breaking_news_title_callback()
+function ttbn_breaking_news_title_callback()
 {
-    $value = get_option('breaking_news_title');
+    $value = get_option('ttbn_breaking_news_title');
 
-    echo "<input type='text' name='breaking_news_title' value='$value'>";
+    echo "<input type='text' name='ttbn_breaking_news_title' value='$value'>";
 
 }
 
 /* Breaking news widget background color field*/
-function breaking_news_background_color_callback()
+function ttbn_breaking_news_background_color_callback()
 {
-    $value = get_option('breaking_background_color');
+    $value = get_option('ttbn_breaking_background_color');
 
-    echo "<input type='text' class='ttbn-color-picker' name='breaking_background_color' value='$value'>";
+    echo "<input type='text' class='ttbn-color-picker' name='ttbn_breaking_background_color' value='$value'>";
 
 }
-/* Breaking news widget text color field*/
-function breaking_news_text_color_callback()
-{
-    $value = get_option('breaking_text_color');
 
-    echo "<input type='text' class='ttbn-color-picker' name='breaking_text_color' value='$value'>";
+/* Breaking news widget text color field*/
+function ttbn_breaking_news_text_color_callback()
+{
+    $value = get_option('ttbn_breaking_text_color');
+
+    echo "<input type='text' class='ttbn-color-picker' name='ttbn_breaking_text_color' value='$value'>";
+
+}
+
+/* Breaking news custom class for frontend widget*/
+function ttbn_breaking_news_custom_selector()
+{
+    $value = get_option('ttbn_frontend_custom_selector');
+
+    echo "<label>Enter a custom selector here if you want to show the breaking news widget on a different location or the widget doesn't display at desired
+    location automatically.
+    <br>Note: This will display the widget after this selector. eg #navigation, .my-header </label><br>";
+    echo "<input type='text' name='ttbn_frontend_custom_selector' value='$value'>";
 
 }
 
 /* Breaking news post edit link field*/
 
-function edit_breaking_news_link_callback()
+function ttbn_edit_breaking_news_link_callback()
 {
     $args = array(
         'post_type' => 'post',
